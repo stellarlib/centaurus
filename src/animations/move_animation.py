@@ -13,13 +13,13 @@ class MoveAnimation(Lerp):
     @classmethod
     def move(cls, actor, destination, resolve_func):
 
-        return cls(actor, actor.node.sprite.position.screen_pos(),
+        return cls(actor, actor.node.sprite_node.position.screen_pos(),
                    destination, actor.hop_height, cls.MOVE_SPEED, resolve_func)
 
     @classmethod
     def jump(cls, actor, destination, resolve_func):
 
-        return cls(actor, actor.node.sprite.position.screen_pos(),
+        return cls(actor, actor.node.sprite_node.position.screen_pos(),
                    destination, actor.jump_height, cls.JUMP_SPEED, resolve_func)
 
     @classmethod
@@ -33,13 +33,13 @@ class MoveAnimation(Lerp):
 
         self.speed = speed
         self.duration = self.calculate_move_time(start, destination)
-        Lerp.__init__(self, actor.node.sprite, start, destination, self.duration)
+        Lerp.__init__(self, actor.node.sprite_node, start, destination, self.duration)
 
         self.resolve_func = resolve_func
 
         # add hop animation
         if height > 0:
-            QuadraticHop(actor.node.sprite, height * PIXEL_SCALE, self.duration)
+            QuadraticHop(actor.node.sprite_node, height * PIXEL_SCALE, self.duration)
 
     def on_complete(self):
         self.resolve_func()

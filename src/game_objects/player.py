@@ -17,7 +17,7 @@ class Player(GameObject):
 
     def __init__(self, game, pos):
 
-        GameObject.__init__(self, game, 'player', pos)
+        GameObject.__init__(self, game, 'centaur', pos)
 
         self.actions = Player.ACTIONS
         self.max_actions = Player.ACTIONS
@@ -60,6 +60,7 @@ class Player(GameObject):
         self.dead = True
         self.game.logic.kill_actor(self)
         print('game over - player died')
+        self.on_death()
 
     def start_move(self, pos, resolve_func):
 

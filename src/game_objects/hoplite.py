@@ -15,7 +15,7 @@ class Hoplite(Soldier):
         if self.shield > 0:
             self.shield -= n
             self.shield_component.hit_shield()
-            HitRumble(self.node.sprite)
+            HitRumble(self.node.sprite_node)
             if self.shield <= 0:
                 self.shield_component.mark_destroyed()
         else:
@@ -27,8 +27,11 @@ class Hoplite(Soldier):
 
     def create_shield_component(self):
 
-        self.shield_component = ShieldSprite(self.node.sprite)
-        self.node.sprite.add_component(self.shield_component)
+        self.shield_component = ShieldSprite(self.node.sprite_node)
+        self.node.sprite_node.add_component(self.shield_component)
 
     def will_die(self, n):
-        return self.shield == 0
+        if self.shield <= 0:
+            return n >= self.hp
+        else:
+            return False

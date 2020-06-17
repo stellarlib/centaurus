@@ -24,3 +24,5 @@ TREE_POSITIONS = [
                  ]
 
 RUMBLE_MAG = max((1, PIXEL_SCALE // 2))
+RUMBLE_DURATION = 12
+RUMBLE_FREQUENCY = 2

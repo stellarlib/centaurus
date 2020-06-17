@@ -2,6 +2,8 @@ from src.sprites import SpriteComponent
 from src.node import SpriteNode, GameObjectNode
 from src.map import hex_to_pixel, Hex
 from src.settings import PIXEL_SCALE
+from src.animations.hit_rumble import HitRumble
+from src.node.death_effect_node import DeathEffectNode
 
 
 class GameObject(object):
@@ -62,8 +64,11 @@ class GameObject(object):
         if self.hp <= 0:
             self.die()
         else:
-            # TODO - flash damage if not dead
-            pass
+            self.hit_effect()
+
+    def hit_effect(self):
+        self.node.sprite_node.sprite_component.flashing = True
+        HitRumble(self.node.sprite_node)
 
     def melee_attack(self, foe):
         foe.hit(1)
@@ -72,7 +77,10 @@ class GameObject(object):
         foe.hit(2)
 
     def on_death(self):
-        pass
+        self.trigger_death_effect()
+
+    def trigger_death_effect(self):
+        DeathEffectNode(self)
 
     def will_die(self, n):
-        return True
+        return n >= self.hp

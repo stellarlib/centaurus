@@ -8,11 +8,11 @@ class GameObjectNode(SceneNode):
 
         SceneNode.__init__(self, parent, pos)
         self.game = game
-        self.sprite = None
+        self.sprite_node = None
 
     def load_sprite(self, sprite_node):
 
-        self.sprite = sprite_node
+        self.sprite_node = sprite_node
 
     def after_render(self, target):
 

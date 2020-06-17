@@ -7,7 +7,7 @@ class ArcAnimation(Lerp):
 
     def __init__(self, actor, projectile_node, destination, height, speed, resolve_func):
 
-        start = actor.node.sprite.position.screen_pos()
+        start = actor.node.sprite_node.position.screen_pos()
         duration = self.calculate_move_time(start, destination, speed)
         Lerp.__init__(self, projectile_node, start, destination, duration)
         self.resolve_func = resolve_func

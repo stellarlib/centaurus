@@ -11,7 +11,7 @@ class ChargeAnimation(Animation):
 
     def __init__(self, actor, start, dest, charge_resolve, final_resolve):
 
-        Animation.__init__(self, actor.node.sprite)
+        Animation.__init__(self, actor.node.sprite_node)
         self.actor = actor
         self.tick = 0
         self.hex_start = start

@@ -28,3 +28,8 @@ class Sprite(object):
     def mask(self, mask_color):
 
         self._surface.create_mask(mask_color, Color.SPRITE_COLORKEY)
+
+    def set_alpha(self, alpha):
+
+        self._surface.set_alpha(alpha)
+
