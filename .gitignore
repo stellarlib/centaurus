@@ -1,5 +1,6 @@
 #
 .assets/
+# .assets/font/
 .work/
 *.png
 *.bmp
@@ -11,7 +12,6 @@
 *.FON
 *.obj
 
-.assets/font/*
 
 # project files
 .idea/
