@@ -60,8 +60,9 @@ class ChargeControl(BaseControl):
         return Tile.is_obstacle(tile)
 
     def slows_charge(self, pos):
-        tile = self.control.game.map.get_tile(pos)
-        return Tile.slows_charge(tile)
+        return self.control.game.map.tile_is_slowing(pos)
+        # tile = self.control.game.map.get_tile(pos)
+        # return Tile.slows_charge(tile)
 
     def is_deadly(self, pos):
         tile = self.control.game.map.get_tile(pos)

@@ -134,8 +134,15 @@ class PlayerControl(object):
 
         foe = self.logic.get_actor_at(pos)
         assert foe != self.player
-        self.player.melee_attack(foe)
-        self.spend_action(MELEE_COST)
+
+        def resolve_func():
+            self.spend_action(MELEE_COST)
+            self.end_animating()
+
+        self.start_animating()
+        self.player.start_melee_attack(foe, resolve_func)
+        # self.player.melee_attack(foe)
+        # self.spend_action(MELEE_COST)
 
     def player_ranged_attacks(self, pos):
 

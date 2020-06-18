@@ -20,9 +20,10 @@ class Enemy(GameObject):
         # TODO this inits attack effect and passes in resolve func
         player = self.game.logic.player
         if player.alive:
-            self.melee_attack(player)
-
-        resolve_func()
+            self.start_melee_attack(player, resolve_func)
+        #     self.melee_attack(player)
+        #
+        # resolve_func()
 
     def start_ai_ranged_attack(self, resolve_func):
         raise Exception('only archer enemy should be firing ranged')

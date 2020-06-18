@@ -13,13 +13,13 @@ class MoveAnimation(Lerp):
     @classmethod
     def move(cls, actor, destination, resolve_func):
 
-        return cls(actor, actor.node.sprite_node.position.screen_pos(),
+        return cls(actor, actor._get_screen_pos(),  #actor.node.sprite_node.position.screen_pos(),
                    destination, actor.hop_height, cls.MOVE_SPEED, resolve_func)
 
     @classmethod
     def jump(cls, actor, destination, resolve_func):
 
-        return cls(actor, actor.node.sprite_node.position.screen_pos(),
+        return cls(actor, actor._get_screen_pos(),  # actor.node.sprite_node.position.screen_pos(),
                    destination, actor.jump_height, cls.JUMP_SPEED, resolve_func)
 
     @classmethod

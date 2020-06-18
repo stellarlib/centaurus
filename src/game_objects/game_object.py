@@ -4,6 +4,7 @@ from src.map import hex_to_pixel, Hex
 from src.settings import PIXEL_SCALE
 from src.animations.hit_rumble import HitRumble
 from src.node.death_effect_node import DeathEffectNode
+from src.animations.attack_animation import AttackAnimation
 
 
 class GameObject(object):
@@ -84,3 +85,11 @@ class GameObject(object):
 
     def will_die(self, n):
         return n >= self.hp
+
+    def start_melee_attack(self, foe, resolve_func):
+
+        def melee_resolve():
+            self.melee_attack(foe)
+            resolve_func()
+
+        AttackAnimation(self, foe, melee_resolve)
