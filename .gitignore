@@ -1,6 +1,6 @@
 #
 .assets/
-# .assets/font/
+.assets/font/
 .work/
 *.png
 *.bmp
