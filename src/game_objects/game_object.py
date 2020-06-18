@@ -50,6 +50,7 @@ class GameObject(object):
 
     def move(self, pos):
         self.place(pos)
+        self.trigger_hazard(pos)
 
     def die(self):
         self.dead = True
@@ -93,3 +94,8 @@ class GameObject(object):
             resolve_func()
 
         AttackAnimation(self, foe, melee_resolve)
+
+    def trigger_hazard(self, pos):
+
+        if self.game.map.tile_is_deadly(pos):
+            self.die()

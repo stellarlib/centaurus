@@ -42,7 +42,7 @@ class Game(Scene):
         self.set_input()
         init_tiles()
         self.hex_layout = init_hex_layout()
-        self. init_map()
+        self.init_map()
         self.logic.init()
 
     def set_input(self):
@@ -79,7 +79,7 @@ class Game(Scene):
             if randint(0, 2) < 2:
                 t = Tile.GRASS
             elif randint(0, 5) == 0:
-                t = Tile.WALL
+                t = Tile.WATER
 
             self.map.add_tile(coord, t)
 
