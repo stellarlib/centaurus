@@ -12,7 +12,7 @@ class JumpControl(BaseControl):
     def init_mode(self):
 
         self._targets = []
-        self._targets = [p for p in self.control.game.map.all_points() if self.is_valid_jump(p)]
+        self._targets = [p for p in self.map.all_points() if self.is_valid_jump(p)]
 
     def is_valid_jump(self, point):
 

@@ -1,6 +1,7 @@
 #
 .assets/
 .assets/font/
+.assets/font/visitor.txt
 .work/
 *.png
 *.bmp

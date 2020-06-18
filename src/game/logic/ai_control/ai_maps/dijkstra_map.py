@@ -45,6 +45,5 @@ class DijkstraMap(object):
 
     def valid_tile(self, pos):
         on_map = self.map.on_map(pos)
-        tile = self.map.get_tile(pos)
-        passable = Tile.is_passable(tile)
+        passable = self.map.tile_is_passable(pos)
         return on_map and passable

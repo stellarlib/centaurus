@@ -12,7 +12,7 @@ class RangedControl(BaseControl):
     def init_mode(self):
 
         self._targets = []
-        self._targets = [p for p in self.control.game.map.all_points() if self.is_valid_shot(p)]
+        self._targets = [p for p in self.map.all_points() if self.is_valid_shot(p)]
 
     def is_valid_shot(self, pos):
 

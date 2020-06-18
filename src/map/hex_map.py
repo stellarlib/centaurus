@@ -1,3 +1,4 @@
+from .tile import Tile
 
 
 class HexMap(object):
@@ -24,3 +25,18 @@ class HexMap(object):
 
     def all_except(self, not_tile):
         return [t for t in self.all_points() if self.get_tile(t) != not_tile]
+
+    def tile_is_obstacle(self, coord):
+        return Tile.is_obstacle(self.get_tile(coord))
+
+    def tile_is_passable(self, coord):
+        return Tile.is_passable(self.get_tile(coord))
+
+    def tile_is_targetable(self, coord):
+        return Tile.is_targetable(self.get_tile(coord))
+
+    def tile_is_deadly(self, coord):
+        return Tile.is_deadly(self.get_tile(coord))
+
+    def tile_is_slowing(self, coord):
+        return Tile.is_slowing(self.get_tile(coord))

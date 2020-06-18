@@ -1,4 +1,4 @@
-from src.map import Tile, Hex
+from src.map import Hex
 
 
 class BaseControl(object):
@@ -15,6 +15,10 @@ class BaseControl(object):
     def logic(self):
         return self.control.logic
 
+    @property
+    def map(self):
+        return self.control.game.map
+
     def init_mode(self):
         pass
 
@@ -27,14 +31,12 @@ class BaseControl(object):
         return Hex.hex_distance(a, b) == 1
 
     def is_passable(self, pos):
-        tile = self.control.game.map.get_tile(pos)
-        passable = Tile.is_passable(tile)
+        passable = self.map.tile_is_passable(pos)
         return self.is_on_map(pos) and passable
 
     def is_targetable(self, pos):
-        tile = self.control.game.map.get_tile(pos)
-        targetable = Tile.is_targetable(tile)
+        targetable = self.map.tile_is_targetable(pos)
         return self.is_on_map(pos) and targetable
 
     def is_on_map(self, pos):
-        return self.control.game.map.on_map(pos)
+        return self.map.on_map(pos)

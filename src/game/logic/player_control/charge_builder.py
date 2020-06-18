@@ -9,6 +9,7 @@ class ChargeBuilder(object):
 
         self.actor = actor  # player
         self.logic = actor.game.logic
+        self.map = self.logic.game.map
         self.charge_path = charge_path
         self.start = start
         self.end = end
@@ -66,17 +67,17 @@ class ChargeBuilder(object):
         return run_pos
 
     def is_valid_run_pos(self, pos):
-        return self.logic.game.map.on_map(pos) and pos not in self._obstruction_map
+        return self.map.on_map(pos) and pos not in self._obstruction_map
 
     def is_deadly(self, pos):
-        return Tile.is_deadly(self.logic.game.map.get_tile(pos))
+        return self.map.tile_is_deadly(pos)
 
     def initialize_obstruction_map(self):
         self._obstruction_map.update(self.charge_path)
         self._obstruction_map.update([p for p in self.logic.game.map.all_points() if self.is_obstructed(p)])
 
     def is_obstructed(self, pos):
-        return Tile.is_obstacle(self.logic.game.map.get_tile(pos)) or self.logic.occupied(pos)
+        return self.map.tile_is_obstacle(pos) or self.logic.occupied(pos)
 
     def _get_hex_pos(self, hex):
         return self.actor._get_hex_pos(hex)
