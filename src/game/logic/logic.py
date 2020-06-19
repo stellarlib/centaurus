@@ -20,27 +20,24 @@ class Logic(object):
         self._ai_turn = False
 
     def init(self):
-
         self.mark_drawer.init()
-        self.initialize_player()
-        self.add_actor(self.player)
 
-        # TODO this goes in a scenario/map generator
-        self.add_actor(Soldier(self.game, (-1, 2)))
-        self.add_actor(Archer(self.game, (-3, 0)))
-        self.add_actor(Archer(self.game, (0, -2)))
-        self.add_actor(Hoplite(self.game, (2, 2)))
+    def load_enemies(self, enemy_list):
 
-        [actor.ai.alert() for actor in filter(lambda a: a != self.player, self.actors)]
+        for enemy in enemy_list:
+            self.add_actor(enemy)
 
-    def initialize_player(self):
-
-        self.player = Player(self.game, (0, 0))
+        [enemy.ai.alert() for enemy in enemy_list]
 
     def add_actor(self, actor):
 
         self.actors.append(actor)
         actor.init(self.game.game_objects)
+
+    def remove_actor(self, actor):
+        actor.on_removal()
+        actor.node.orphan()
+        self.actors.remove(actor)
 
     def kill_actor(self, actor):
 
@@ -59,8 +56,7 @@ class Logic(object):
     def clear_killed(self):
 
         for actor in self.killed:
-            actor.node.orphan()
-            self.actors.remove(actor)
+            self.remove_actor(actor)
         del self.killed[:]
 
     def get_actor_at(self, pos):
@@ -94,3 +90,11 @@ class Logic(object):
 
         self._ai_turn = False
         self.player_control.start_player_turn()
+
+    def leave_map(self):
+        # player left the current map, so get rid of all game_objects except player
+        for actor in self.foes():
+            self.remove_actor(actor)
+            # TODO needs to clear mark for archers
+
+        self.player.fully_restore()

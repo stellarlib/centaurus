@@ -56,6 +56,10 @@ class Player(GameObject):
         self.actions = min((self.max_actions, self.actions))
         self.player_overlay.update_icons()
 
+    def fully_restore(self):
+        self.actions = self.max_actions
+        self.player_overlay.update_icons()
+
     def die(self):
         self.dead = True
         self.game.logic.kill_actor(self)

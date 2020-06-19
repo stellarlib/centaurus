@@ -7,6 +7,9 @@ class HexMap(object):
 
         self._map = {}
 
+    def clear(self):
+        self._map.clear()
+
     def get_tile(self, coord):
         return self._map.get(coord)
 
@@ -40,3 +43,6 @@ class HexMap(object):
 
     def tile_is_slowing(self, coord):
         return Tile.is_slowing(self.get_tile(coord))
+
+    def get_all_passable(self):
+        return [pos for pos in self.all_points() if self.tile_is_passable(pos)]

@@ -9,6 +9,8 @@ from .mouse import Mouse
 from src.settings import SCREEN_W, SCREEN_H
 from src.input import KeyPressFunction
 from stellarlib.input.constants import *
+from .generator.level_generator import LevelGenerator
+from src.game_objects import Player
 
 
 # transitions between different game scenes
@@ -22,14 +24,25 @@ class Game(Scene):
         Scene.__init__(self, app)
 
         self.hex_layout = None
-        self.map = HexMap()
+        self.map = None
         self.map_image = None
         self.game_objects = None
         self.overlay = None
-
         self.logic = Logic(self)
 
+        self.threat = 0
+
         self._initialize()
+
+    def _get_screen_dim(self):
+        return SCREEN_W, SCREEN_H
+
+    def on_update(self):
+        self.logic.update()
+
+    def get_transition(self):
+
+        return ExitTransition()
 
     def populate_scene_tree(self):
 
@@ -42,10 +55,21 @@ class Game(Scene):
         self.set_input()
         init_tiles()
         self.hex_layout = init_hex_layout()
-        self.init_map()
         self.logic.init()
 
+        self.load_new_level()
+
+    def initialize_player(self, pos=(0, 0)):
+        self.logic.player = Player(self, pos)
+        self.logic.add_actor(self.logic.player)
+
     def set_input(self):
+
+        # TODO TEMP
+        def start_next_level():
+            self.logic.leave_map()
+            self.load_new_level(self.logic.player)
+        self.input_handler.add_listener(KeyPressFunction(K_n, start_next_level, self))
 
         def ranged_mode():
             self.logic.player_control.manual_switch_mode('ranged')
@@ -71,26 +95,21 @@ class Game(Scene):
 
     def init_map(self):
 
-        # TEMP - TODO - map generator
-        from random import randint
-        for coord in make_hex(5):
-
-            t = Tile.GRASS
-            if randint(0, 2) < 2:
-                t = Tile.GRASS
-            elif randint(0, 5) == 0:
-                t = Tile.WATER
-
-            self.map.add_tile(coord, t)
-
+        self.map = LevelGenerator.generate_new_map()
         self.map_image.init_map_image()
 
-    def _get_screen_dim(self):
-        return SCREEN_W, SCREEN_H
+    def load_new_level(self, player=None):
 
-    def on_update(self):
-        self.logic.update()
+        print('testing new level')
 
-    def get_transition(self):
+        self.init_map()
+        start_pos = LevelGenerator.get_start_pos(self.map)
 
-        return ExitTransition()
+        if not player:
+            self.initialize_player(start_pos)
+        else:
+            player.move(start_pos)
+
+        LevelGenerator.generate_enemies(self, self.map, self.threat)
+
+        self.threat += 1

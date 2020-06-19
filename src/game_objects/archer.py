@@ -14,9 +14,11 @@ class Archer(Enemy):
 
     def on_death(self):
         # if still has a mark down on board, clear it
+        self.trigger_death_effect()
+
+    def on_removal(self):
         if self.ai.mark:
             self.ai.hard_clear_mark()
-        self.trigger_death_effect()
 
     def start_ai_ranged_attack(self, resolve_func):
 

@@ -7,9 +7,11 @@ class DijkstraMap(object):
     def __init__(self, logic):
 
         self.logic = logic
-        self.map = logic.game.map
-
         self._map = {}
+
+    @property
+    def map(self):
+        return self.logic.game.map
 
     def clear(self):
         self._map.clear()
@@ -23,7 +25,6 @@ class DijkstraMap(object):
     def calculate_dijkstra(self):
 
         start_edge = {self.logic.player.pos}
-        valid_func = self.valid_tile
 
         edge = set(start_edge)
         touched_set = set(start_edge)
@@ -35,7 +36,7 @@ class DijkstraMap(object):
 
             value += 1
 
-            edge = hex_flood(edge, valid_func, touched_set)
+            edge = hex_flood(edge, self.is_valid_tile, touched_set)
             touched_set.update(edge)
 
             for e in edge:
@@ -43,7 +44,7 @@ class DijkstraMap(object):
 
         self._map.update(dijkstra)
 
-    def valid_tile(self, pos):
+    def is_valid_tile(self, pos):
         on_map = self.map.on_map(pos)
         passable = self.map.tile_is_passable(pos)
         return on_map and passable

@@ -11,18 +11,24 @@ class MapImage(object):
     def __init__(self, game):
 
         self.game = game
-        self.map = self.game.map
         self.surface = self.init_surface()
         self.tree_sprite = TreeSprite()
+
+    @property
+    def map(self):
+        return self.game.map
 
     def init_surface(self):
 
         surface = BaseSurface.make_blank(MAP_W, MAP_H)
-        surface.fill(Color.BLACK)
 
         return surface
 
+    def _clear(self):
+        self.surface.fill(Color.BLACK)
+
     def init_map_image(self):
+        self._clear()
         self._draw_tiles()
         self._draw_trees()
 

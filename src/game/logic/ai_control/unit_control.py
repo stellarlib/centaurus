@@ -18,6 +18,7 @@ class UnitControl(object):
         self.dijkstra_map = DijkstraMap(self.ai_control.logic)
 
     def init(self):
+        # run at start of ai turn
         # calculate dijkstra
         self.dijkstra_map.update()
         self.move_map.init()
@@ -135,10 +136,12 @@ class UnitControl(object):
         in_range = actor.ai.get_tiles_in_range()
 
         # can't mark a previously marked tile
-        in_range = filter(lambda c: not self.mark_map.is_marked(c), in_range)
+        in_range = [coord for coord in in_range if not self.mark_map.is_marked(coord)]
+        # in_range = filter(lambda c: not self.mark_map.is_marked(c), in_range)
         # don't shoot at tiles occupied by another monster
         friendly_occupied = {foe.pos for foe in self.logic.foes()}
-        in_range = filter(lambda c: c not in friendly_occupied, in_range)
+        # in_range = filter(lambda c: c not in friendly_occupied, in_range)
+        in_range = [coord for coord in in_range if coord not in friendly_occupied]
 
         weighted = self.weigh_mark_options(actor, in_range)
 

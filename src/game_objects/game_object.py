@@ -99,3 +99,6 @@ class GameObject(object):
 
         if self.game.map.tile_is_deadly(pos):
             self.die()
+
+    def on_removal(self):
+        pass

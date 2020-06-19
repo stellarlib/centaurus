@@ -3,10 +3,13 @@
 class MoveMap(object):
 
     def __init__(self, logic):
-        self.logic = logic
-        self.map = logic.game.map
 
+        self.logic = logic
         self._map = {}
+
+    # @property
+    # def map(self):
+    #     return self.logic.map
 
     def init(self):
         for foe in self.logic.foes():

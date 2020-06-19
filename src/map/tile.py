@@ -12,7 +12,7 @@ class Tile(object):
     OBSTACLE = {WALL, ROCKS}
     SLOWS_CHARGE = {WOODS, WATER, SAND, CLAY}
     DEADLY = {WATER}
-    SHELTERED = {WOODS}
+    SHELTERED = {WOODS, WALL, ROCKS, WATER}
 
     @classmethod
     def random_tile(cls):

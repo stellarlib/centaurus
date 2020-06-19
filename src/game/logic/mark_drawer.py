@@ -10,6 +10,7 @@ class MarkDrawer(object):
     B = 1
 
     def __init__(self, logic):
+
         self.logic = logic
         self._marks = []
         self.tick = 0
