@@ -57,19 +57,21 @@ class Game(Scene):
         self.hex_layout = init_hex_layout()
         self.logic.init()
 
-        self.load_new_level()
+        self.load_new_level(self.generate_next_level(), (0, 0))
 
     def initialize_player(self, pos=(0, 0)):
-        self.logic.player = Player(self, pos)
-        self.logic.add_actor(self.logic.player)
+        self.logic.add_player(Player(self, pos))
 
     def set_input(self):
 
         # TODO TEMP
-        def start_next_level():
+        def start_new_level():
             self.logic.leave_map()
-            self.load_new_level(self.logic.player)
-        self.input_handler.add_listener(KeyPressFunction(K_n, start_next_level, self))
+            level = self.generate_next_level()
+            start_pos = LevelGenerator.get_start_pos(level)
+            self.load_new_level(level, start_pos, self.logic.player)
+
+        self.input_handler.add_listener(KeyPressFunction(K_n, start_new_level, self))
 
         def ranged_mode():
             self.logic.player_control.manual_switch_mode('ranged')
@@ -93,23 +95,27 @@ class Game(Scene):
 
         self.input_handler.set_mouse_handler(Mouse)
 
-    def init_map(self):
+    def init_map(self, map):
 
-        self.map = LevelGenerator.generate_new_map()
+        self.map = map
         self.map_image.init_map_image()
 
-    def load_new_level(self, player=None):
+    def load_new_level(self, new_map, start_pos, player=None):
 
         print('testing new level')
 
-        self.init_map()
-        start_pos = LevelGenerator.get_start_pos(self.map)
+        self.init_map(new_map)
+        # start_pos = LevelGenerator.get_start_pos(self.map)
 
         if not player:
             self.initialize_player(start_pos)
         else:
             player.move(start_pos)
+        print(start_pos)
 
         LevelGenerator.generate_enemies(self, self.map, self.threat)
 
         self.threat += 1
+
+    def generate_next_level(self):
+        return LevelGenerator.generate_new_map()

@@ -40,3 +40,6 @@ class BaseControl(object):
 
     def is_on_map(self, pos):
         return self.map.on_map(pos)
+
+    def is_exit(self, pos):
+        return self.map.tile_is_exit(pos)

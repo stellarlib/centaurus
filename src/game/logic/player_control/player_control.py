@@ -109,6 +109,19 @@ class PlayerControl(object):
         self.start_animating()
         self.player.start_move(pos, resolve_func)
 
+    def player_exits_level(self, pos):
+
+        def resolve_func():
+            self.end_animating()
+            self.player.travel_component.travel_to_next_level(pos)
+            # get next level according to pos
+            # get the new player pos on that level
+            # start the new level, put player in new pos
+            # refresh the turn so it is player start turn, full AP
+
+        self.start_animating()
+        self.player.start_exit_move(pos, resolve_func)
+
     def jump_player(self, pos):
 
         def resolve_func():

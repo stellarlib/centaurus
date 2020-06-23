@@ -1,11 +1,13 @@
 from random import randint
+from src.map.hex_map_properties import EdgeID
 
 
 class Tile(object):
 
-    n = 8
+    n = 15
 
-    GRASS, WOODS, WATER, ROCKS, SAND, CLAY, ROAD, WALL = range(n)
+    GRASS, WOODS, WATER, ROCKS, SAND, CLAY, ROAD, WALL, EXIT,\
+        EXIT0, EXIT1, EXIT2, EXIT3, EXIT4, EXIT5 = range(n)
 
     OPEN = {GRASS, ROAD}
     IMPASSABLE = {WALL, ROCKS, WATER}
@@ -13,6 +15,20 @@ class Tile(object):
     SLOWS_CHARGE = {WOODS, WATER, SAND, CLAY}
     DEADLY = {WATER}
     SHELTERED = {WOODS, WALL, ROCKS, WATER}
+
+    EXIT_TILES = {EXIT, EXIT0, EXIT1, EXIT2, EXIT3, EXIT4, EXIT5}
+    IMPASSABLE.update(EXIT_TILES)
+    OBSTACLE.update(EXIT_TILES)
+    SHELTERED.update(EXIT_TILES)
+
+    EDGE_ID_TO_EXIT = {
+        EdgeID.Ae: EXIT0,
+        EdgeID.Be: EXIT1,
+        EdgeID.Ce: EXIT2,
+        EdgeID.De: EXIT3,
+        EdgeID.Ee: EXIT4,
+        EdgeID.Fe: EXIT5,
+    }
 
     @classmethod
     def random_tile(cls):

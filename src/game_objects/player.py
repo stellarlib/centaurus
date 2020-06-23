@@ -6,6 +6,7 @@ from .player_overlay import PlayerOverlay
 from src.settings import PIXEL_SCALE
 from src.animations.move_animation import MoveAnimation
 from src.game.logic.player_control.charge_builder import ChargeBuilder
+from src.game_objects.player_components import TravelComponent
 
 
 class Player(GameObject):
@@ -34,6 +35,8 @@ class Player(GameObject):
 
         # charging
         self.charge_damage = 0
+
+        self.travel_component = TravelComponent(self)
 
         self.player_overlay = PlayerOverlay(self)
 
@@ -73,6 +76,15 @@ class Player(GameObject):
             resolve_func()
 
         MoveAnimation.move(self, self._get_hex_pos(pos), move_resolve)
+
+    def start_exit_move(self, pos, resolve_func):
+
+        def move_resolve():
+            self.move(pos)
+            resolve_func()
+
+        MoveAnimation.move(self, self._get_hex_pos(pos), move_resolve)
+        print('TODO - this triggers an exit level thing')
 
     def start_jump(self, pos, resolve_func):
 

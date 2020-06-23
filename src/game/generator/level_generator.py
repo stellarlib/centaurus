@@ -1,5 +1,6 @@
 from src.map import HexMap, Tile, shape
 from random import *
+from src.map.hex_map_properties import *
 
 from src.game_objects import Archer, Hoplite, Soldier
 
@@ -7,19 +8,40 @@ from src.game_objects import Archer, Hoplite, Soldier
 class LevelGenerator(object):
 
     MIN_FOES = 4
-    MAX_FOES = 64
+    MAX_FOES = 35
 
-    def __init__(self):
-        pass
+    MAP_RADIUS = 4
 
     @classmethod
     def generate_new_map(cls):
 
         # TEMP - TODO - map generator
 
-        _map = HexMap()
+        _map = HexMap(cls.MAP_RADIUS)
 
-        for coord in shape.make_hex(4):
+        # return cls.test_map(_map)
+        return cls.random_map(_map)
+
+    @classmethod
+    def test_map(cls, _map):
+
+        # for coord in shape.make_vertical_line((0, 0), 5, rev=True):
+        #     _map.add_tile(coord, Tile.GRASS)
+        #
+        # for coord in shape.make_horizontal_line((0, 0), 5):
+        #     _map.add_tile(coord, Tile.ROAD)
+        # for coord in shape.make_ring((1, 0), 2):
+        #     _map.add_tile(coord, Tile.ROAD)
+
+        for coord in shape.make_structure((-2, 1), 3):
+            _map.add_tile(coord, Tile.ROAD)
+
+        return _map
+
+    @classmethod
+    def random_map(cls, _map):
+
+        for coord in shape.make_hex(cls.MAP_RADIUS):
 
             if randint(0, 9) < 3:
                 t = Tile.WOODS
@@ -34,16 +56,32 @@ class LevelGenerator(object):
 
             _map.add_tile(coord, t)
 
+        # add map exit to top row
+
+        # for edge_id in travel_edges
+        for id in EdgeID.exit_ids:
+
+            edge = Edge(id, cls.MAP_RADIUS)
+            _map.add_exit_edge(edge)
+            for coord in edge:
+                _map.add_tile(coord, Tile.EDGE_ID_TO_EXIT[id])
+
         return _map
 
     @classmethod
     def generate_enemies(cls, game, map, threat=0):
 
-        n = threat + cls.MIN_FOES +10
-
         coords = map.get_all_passable()
         shuffle(coords)
-        coords.remove(game.logic.player.pos)
+        # TODO take that out
+        try:
+            coords.remove(game.logic.player.pos)
+        except:
+            print('player spawned on impassible?')
+
+        n = threat + cls.MIN_FOES
+        n = min((cls.MAX_FOES, n, len(coords)-5))
+        print(n, ' enemies')
 
         def next_coord():
             return coords.pop()

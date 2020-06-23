@@ -34,6 +34,10 @@ class Logic(object):
         self.actors.append(actor)
         actor.init(self.game.game_objects)
 
+    def add_player(self, player):
+        self.player = player
+        self.add_actor(self.player)
+
     def remove_actor(self, actor):
         actor.on_removal()
         actor.node.orphan()
@@ -96,5 +100,3 @@ class Logic(object):
         for actor in self.foes():
             self.remove_actor(actor)
             # TODO needs to clear mark for archers
-
-        self.player.fully_restore()

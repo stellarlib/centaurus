@@ -14,3 +14,5 @@ class StandardControl(BaseControl):
                 self.control.player_attacks(pos)
             elif self.is_passable(pos):
                 self.control.move_player(pos)
+            elif self.is_exit(pos):
+                self.control.player_exits_level(pos)
