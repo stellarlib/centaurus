@@ -56,10 +56,15 @@ class LevelGenerator(object):
 
             _map.add_tile(coord, t)
 
+        # temp button coord test
+        # buttons = [(2, 5), (1, 5), (1, 6), (0, 6), (2,6)]
+        # for coord in buttons:
+        #     _map.add_tile(coord, Tile.ROAD)
+
         # add map exit to top row
 
         # for edge_id in travel_edges
-        for id in EdgeID.exit_ids:
+        for id in [EdgeID.Ae, ]:
 
             edge = Edge(id, cls.MAP_RADIUS)
             _map.add_exit_edge(edge)

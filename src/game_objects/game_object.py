@@ -34,6 +34,10 @@ class GameObject(object):
     def create_node(self, parent):
         self.node = GameObjectNode(parent, self._get_screen_pos(), self.game)
         self.node.load_sprite(SpriteNode(self.node, SpriteComponent(self.name)))
+        self.on_node_creation()
+
+    def on_node_creation(self):
+        pass
 
     def _get_screen_pos(self):
         return self._get_hex_pos(self.pos)

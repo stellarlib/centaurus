@@ -2,12 +2,18 @@ from .enemy import Enemy
 from src.game.logic.ai_control.unit_ai import RangedAI
 from src.node import ProjectileNode
 
+# from src.sprites.palettes import *
+
 
 class Archer(Enemy):
 
     def __init__(self, game, pos, hp=1):
 
         Enemy.__init__(self, game, 'archer', pos, hp)
+
+    def on_node_creation(self):
+        # self.node.sprite_node.sprite_component.palette_swap(basic_soldier_palette, elite_soldier_palette)
+        pass
 
     def _load_ai(self):
         return RangedAI(self)

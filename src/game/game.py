@@ -1,5 +1,5 @@
 from stellarlib.scene import Scene
-from src.map import init_hex_layout, HexMap, make_hex, Tile
+from src.map import init_hex_layout, ButtonMap
 from src.tile import init_tiles
 from stellarlib.scene_node import SceneNode
 from src.node.map_node import MapNode
@@ -11,6 +11,7 @@ from src.input import KeyPressFunction
 from stellarlib.input.constants import *
 from .generator.level_generator import LevelGenerator
 from src.game_objects import Player
+from .input_set_up import *
 
 
 # transitions between different game scenes
@@ -28,6 +29,7 @@ class Game(Scene):
         self.map_image = None
         self.game_objects = None
         self.overlay = None
+        self.buttons = ButtonMap()
         self.logic = Logic(self)
 
         self.threat = 0
@@ -52,12 +54,12 @@ class Game(Scene):
 
     def on_start(self):
 
-        self.set_input()
         init_tiles()
         self.hex_layout = init_hex_layout()
+        self.set_input()
         self.logic.init()
 
-        self.load_new_level(self.generate_next_level(), (0, 0))
+        self.load_new_level(self.generate_next_level(), (-1, 2))
 
     def initialize_player(self, pos=(0, 0)):
         self.logic.add_player(Player(self, pos))
@@ -94,6 +96,9 @@ class Game(Scene):
         self.input_handler.add_listener(KeyPressFunction(K_c, charge_mode, self))
 
         self.input_handler.set_mouse_handler(Mouse)
+
+        # set up buttons
+        set_up_buttons(self)
 
     def init_map(self, map):
 

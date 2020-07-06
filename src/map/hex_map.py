@@ -25,6 +25,9 @@ class HexMap(object):
     def on_map(self, coord):
         return coord in self._map and self.tile_is_not_exit(coord)
 
+    def part_of_map(self, coord):
+        return coord in self._map
+
     def all_points(self):
         for point in self._map.keys():
             yield point

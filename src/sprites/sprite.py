@@ -16,14 +16,17 @@ class Sprite(object):
     def draw(self, target, pos=(0, 0)):
         self._surface.draw(target, pos=pos)
 
-    @staticmethod
-    def get_file_path(sprite):
+    @classmethod
+    def get_file_path(cls, sprite):
         filename = ''.join((sprite, '.png'))
-        return os.path.join(Sprite.sprite_path, filename)
+        return os.path.join(cls.sprite_path, filename)
 
     def replace_color(self, old, new):
 
         self._surface.replace_color(old, new)
+
+    def palette_swap(self, old_palette, new_palette):
+        self._surface.palette_swap(old_palette, new_palette)
 
     def mask(self, mask_color):
 

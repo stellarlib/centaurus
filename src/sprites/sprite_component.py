@@ -51,6 +51,11 @@ class SpriteComponent(object):
 
         return sprites
 
+    def palette_swap(self, old_palette, new_palette):
+        cls = SpriteComponent
+        self.sprites[cls.A][cls.REG].palette_swap(old_palette, new_palette)
+        self.sprites[cls.B][cls.REG].palette_swap(old_palette, new_palette)
+
     def draw(self, target):
         self.surface.draw(target)
 

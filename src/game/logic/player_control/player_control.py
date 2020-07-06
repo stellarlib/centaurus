@@ -52,43 +52,67 @@ class PlayerControl(object):
     def active(self):
         return self._player_turn and not self._animating
 
+    @property
+    def button_map(self):
+        return self.game.buttons
+
     #####################
     # Routing input #
     #################
-    def switch_mode(self, key):
+    def switch_mode(self, mode_name):
+
+        # this models the panel of buttons where the player toggles between action types
 
         cls = PlayerControl
-        mode = cls.str_to_enum[key]
+        mode = cls.str_to_enum[mode_name]
 
         if self.mode == mode:
+
             self.mode = cls.STD
-            print('switched to standard mode')
+
+            #print('switched to standard mode')
+            self.reset_mode_panel()
+
         else:
 
             cost = cls.action_cost[mode]
             if cost > self.player.actions:
-                # TODO
-                # mode switch fail noise
-                # rumble mode button
-                print("can't switch to ", key, " mode - insufficient player actions")
-                pass
+
+                #print("can't switch to ", mode_name, " mode - insufficient player actions")
+                button = self.button_map.get_button_by_id(mode_name)
+                button.rumble()
 
             else:
+
                 self.mode = mode
                 self.controls[self.mode].init_mode()
-                print('switched to ', key, ' mode')
+
+                # print('switched to ', mode_name, ' mode')
+                self.reset_mode_panel()
+
+                if mode_name != 'std':
+                    button = self.button_map.get_button_by_id(mode_name)
+                    button.button_down()
+
+    def reset_mode_panel(self):
+        [button.button_up() for button in self.button_map.get_button_group('action_mode')]
 
     def handle_click(self, pos):
         if self.active:
             self.controls[self.mode].handle_click(pos)
 
-    def manual_switch_mode(self, mode):
+    def manual_switch_mode(self, mode_name):
         if self.active:
-            self.switch_mode(mode)
+            self.switch_mode(mode_name)
+        else:
+            button = self.button_map.get_button_by_id(mode_name)
+            button.rumble()
 
     def manual_turn_end(self):
         if self.active:
             self.rest()
+            button = self.button_map.get_button_by_id('skip')
+            button.button_down()
 
     def start_animating(self):
         self._animating = True
@@ -154,8 +178,6 @@ class PlayerControl(object):
 
         self.start_animating()
         self.player.start_melee_attack(foe, resolve_func)
-        # self.player.melee_attack(foe)
-        # self.spend_action(MELEE_COST)
 
     def player_ranged_attacks(self, pos):
 
